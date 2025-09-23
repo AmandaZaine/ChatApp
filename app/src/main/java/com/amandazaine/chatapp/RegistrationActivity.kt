@@ -124,7 +124,7 @@ class RegistrationActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
-        val toolbar = binding.includeToolbar.materialToolbar
+        val toolbar = binding.includeRegToolbar.materialToolbar
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             title = "Registration"

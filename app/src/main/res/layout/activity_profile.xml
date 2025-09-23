@@ -5,13 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ProfileActivity">
 
-    <include
-        android:id="@+id/includeMainToolbar"
-        layout="@layout/toolbar_chatapp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="193dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

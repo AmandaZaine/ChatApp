@@ -8,7 +8,7 @@
     tools:context=".RegistrationActivity">
 
     <include
-        android:id="@+id/includeToolbar"
+        android:id="@+id/includeRegToolbar"
         layout="@layout/toolbar_chatapp" />
 
     <com.google.android.material.textfield.TextInputLayout
