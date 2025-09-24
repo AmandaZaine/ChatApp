@@ -1,17 +1,15 @@
 package com.amandazaine.chatapp
 
-import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.amandazaine.chatapp.databinding.ActivityMainBinding
 import com.amandazaine.chatapp.databinding.ActivityProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -25,6 +23,10 @@ class ProfileActivity : AppCompatActivity() {
         FirebaseAuth.getInstance()
     }
 
+    private var hasPermissionCamera = false
+    private var hasPermissionGallery = false
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,6 +38,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         initToolbar()
+        requestPermissions()
     }
 
     private fun initToolbar() {
@@ -46,5 +49,36 @@ class ProfileActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun requestPermissions() {
+
+        //Verify if the user has granted the permission
+        val checkPermissionCamera = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+        val checkPermissionGallery = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        hasPermissionCamera = checkPermissionCamera == PackageManager.PERMISSION_GRANTED
+        hasPermissionGallery = checkPermissionGallery == PackageManager.PERMISSION_GRANTED
+
+        //If the user has not granted the permission, we map the required permissions to a list
+        var deniedPermissions = mutableListOf<String>()
+
+        if (!hasPermissionCamera) deniedPermissions.add(android.Manifest.permission.CAMERA)
+        if (!hasPermissionGallery) deniedPermissions.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        //If the list is not empty, we request the permissions
+        if( deniedPermissions.isNotEmpty() ) {
+
+            //We use the ActivityResultLauncher to handle the result of the permission request
+            var permissionManager = registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) {
+                hasPermissionCamera = it[android.Manifest.permission.CAMERA] ?: hasPermissionCamera
+                hasPermissionGallery = it[android.Manifest.permission.READ_EXTERNAL_STORAGE] ?: hasPermissionGallery
+            }
+
+            permissionManager.launch(deniedPermissions.toTypedArray() )
+        }
     }
 }
