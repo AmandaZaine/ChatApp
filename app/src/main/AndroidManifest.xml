@@ -13,6 +13,7 @@
         android:theme="@style/Theme.ChatApp">
         <activity
             android:name=".ProfileActivity"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".RegistrationActivity"

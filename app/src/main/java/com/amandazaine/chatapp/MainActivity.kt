@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.amandazaine.chatapp.adapter.ViewPagerAdapter
 import com.amandazaine.chatapp.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +37,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         initToolbar()
+        initTabNavigation()
+    }
+
+    private fun initTabNavigation() {
+        val tabLayout = binding.tabLayout
+        tabLayout.isTabIndicatorFullWidth = false
+
+        val viewPager = binding.viewPager
+
+        val tabTitles = listOf("Chats", "Contacts")
+
+        viewPager.adapter = ViewPagerAdapter(tabTitles, supportFragmentManager, lifecycle)
+
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = tabTitles[position]
+        }.attach()
     }
 
     private fun initToolbar() {

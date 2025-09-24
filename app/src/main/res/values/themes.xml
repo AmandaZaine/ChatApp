@@ -10,4 +10,7 @@
         <item name="tint">@color/white</item>
     </style>
     <style name="Theme.ChatApp" parent="Base.Theme.ChatApp" />
+    <style name="corner">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
